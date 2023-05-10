@@ -1,9 +1,10 @@
 import app from './app.js';
 import {sequelize} from './database/database.js';
+// import './models/cateogoria.model.js';
 
 async function main() {
     try{
-        await sequelize.authenticate();
+        await sequelize.sync({force: false});
         console.log('Connection has been established successfully.');
     }
     catch(error){
