@@ -1,5 +1,5 @@
 
-import {Categoria} from '../models/cateogoria.model.js';
+import {Categoria} from '../models/categoria.model.js';
 
 export const getCategorias = async (req, res) => {
     const categorias = await Categoria.findAll();
