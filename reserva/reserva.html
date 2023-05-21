@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generar Reserva</title>
+</head>
+<body>
+    <h1>Generar Reserva</h1>
+    
+    <form id="reservaForm" action="/reserva" method="POST">
+        <label for="id_cliente">ID Cliente:</label>
+        <input type="text" id="id_cliente" name="id_cliente" required><br><br>
+        
+        <label for="id_restaurante">ID Restaurante:</label>
+        <input type="text" id="id_restaurante" name="id_restaurante" required><br><br>
+        
+        <label for="id_mesa">ID Mesa:</label>
+        <input type="text" id="id_mesa" name="id_mesa" required><br><br>
+        
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" name="fecha" required><br><br>
+        
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" name="cantidad" required><br><br>
+        
+        <label for="desdeHora">Desde Hora:</label>
+        <input type="number" id="desdeHora" name="desdeHora" required><br><br>
+        
+        <label for="hastaHora">Hasta Hora:</label>
+        <input type="number" id="hastaHora" name="hastaHora" required><br><br>
+        
+        <input type="submit" value="Generar Reserva">
+    </form>
+    
+    <script>
+        document.getElementById("reservaForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const id_cliente = document.getElementById("id_cliente").value;
+            const id_restaurante = document.getElementById("id_restaurante").value;
+            const id_mesa = document.getElementById("id_mesa").value;
+            const fecha = document.getElementById("fecha").value;
+            const cantidad = document.getElementById("cantidad").value;
+            const desdeHora = document.getElementById("desdeHora").value;
+            const hastaHora = document.getElementById("hastaHora").value;
+            
+            const reservaData = {
+                id_cliente,
+                id_restaurante,
+                id_mesa,
+                fecha,
+                cantidad,
+                desdeHora,
+                hastaHora
+            };
+            
+            try {
+                const response = await fetch("http://localhost:3000/api/reserva", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(reservaData)
+                });
+                
+                const data = await response.json();
+                alert("Reserva generada exitosamente");
+                // Aquí puedes realizar cualquier otra acción que desees después de generar la reserva
+            } catch (error) {
+                console.error("Error al generar la reserva:", error);
+                alert("Ocurrió un error al generar la reserva");
+            }
+        });
+    </script>
+</body>
+</html>

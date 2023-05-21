@@ -7,7 +7,7 @@ async function main() {
         await sequelize.sync({ force: false });
         console.log('Connection has been established successfully.');
 
-        // Associate all models
+        // Asociar todos los modelos
         Object.values(models).forEach((model) => {
             if (model.associate) {
                 model.associate(models);
@@ -16,8 +16,8 @@ async function main() {
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }
-    await app.listen(3000, () => {
-           // console.log('Config', sequelize.config);
+    
+    app.listen(3000, () => {
         console.log('Server is running on port 3000');
     });
 }
