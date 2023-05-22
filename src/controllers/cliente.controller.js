@@ -115,3 +115,26 @@ export const updateCliente = async (req, res) => {
     console.log(error);
   }
 };
+
+export const getClientByCedula = async (req, res) => {
+    const { cedula } = req.params;
+    try {
+      const cliente = await Cliente.findOne({
+        where: {
+          cedula,
+        },
+      });
+      if (!cliente) {
+        return res.status(404).json({
+          message: "Cliente no encontrado",
+        });
+      }
+      res.json({
+        data: cliente,
+      });
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
+  

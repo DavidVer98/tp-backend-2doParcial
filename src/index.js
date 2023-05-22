@@ -4,7 +4,7 @@ import * as models from './models/index.js';
 
 async function main() {
     try {
-        await sequelize.sync({ force: false });
+        await sequelize.sync();
         console.log('Connection has been established successfully.');
 
         // Asociar todos los modelos

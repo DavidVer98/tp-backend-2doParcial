@@ -23,6 +23,6 @@ export const sequelize = new Sequelize(
       min: 0,
       idle: 10000,
     },
-    logging: true,
+    logging: false,
   }
 );
