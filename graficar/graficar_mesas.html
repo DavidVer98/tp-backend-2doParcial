@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Graficar Mesas de Restaurante</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    #canvas {
+      width: 500px;
+      height: 500px;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+    <form id="filterForm">
+        <label for="restauranteId">Restaurante:</label>
+        <select id="restauranteId" name="restauranteId" required>
+            <!-- Las opciones de restaurante se agregarán dinámicamente -->
+        </select>
+        <br><br>
+        <label for="nro_piso">Piso:</label>
+        <input type="number" id="nro_piso" name="nro_piso" required>
+        <br><br>
+        <button type="submit">Mostrar</button>
+    <form>
+    <svg id="canvas"></svg>
+
+    <script>
+
+        function obtenerMesas() {
+          fetch('http://localhost:3000/api/mesas/')
+            .then(response => response.json())
+            .then(mesas => {
+            // Almacenar los datos obtenidos en una variable reservas en el ámbito global
+                window.mesas = mesas;
+            })
+            .catch(error => console.error('Error al obtener las mesas:', error));
+        }
+
+        async function cargarRestaurantes() {
+            try {
+                const response = await fetch("http://localhost:3000/api/restaurantes");
+                const data = await response.json();
+                
+                const selectRestaurante = document.getElementById("restauranteId");
+                
+                data.data.forEach(restaurante => {
+                    const option = document.createElement("option");
+                    option.value = restaurante.id;
+                    option.textContent = restaurante.nombre;
+                    selectRestaurante.appendChild(option);
+                });
+            } catch (error) {
+                console.error("Error al cargar los restaurantes:", error);
+                alert("Ocurrió un error al cargar los restaurantes");
+            }
+        }
+
+        function mostrarMesasFiltradas() {
+            // Obtener el ID del restaurante y el nro de piso
+            var restauranteId = document.getElementById('restauranteId').value;
+            var nro_piso = document.getElementById('nro_piso').value;
+
+            // Filtrar las mesas en base al ID del restaurante
+            var mesasFiltradas = window.mesas.filter(function(mesa) {
+                return mesa.restauranteId == restauranteId && mesa.nro_piso == nro_piso;
+            });
+
+            var svg = d3.select("#canvas")
+                .attr("width", 500)
+                .attr("height", 500);
+
+                // Dibuja las mesas en el lienzo
+                svg.selectAll("circle")
+                .data(mesasFiltradas)
+                .enter()
+                .append("circle")
+                .attr("cx", function(d) { return d.posicion_x; })
+                .attr("cy", function(d) { return d.posicion_y; })
+                .attr("r", 10)
+                .attr("fill", "green");
+
+                // Agrega el nombre de cada mesa como texto junto al círculo
+                svg.selectAll("text")
+                .data(mesasFiltradas)
+                .enter()
+                .append("text")
+                .attr("x", function(d) { return d.posicion_x + 15; })
+                .attr("y", function(d) { return d.posicion_y + 5; })
+                .text(function(d) { return d.nombre_mesa; })
+                .attr("fill", "black");
+        }
+        // Escuchar el evento de envío del formulario
+        document.getElementById('filterForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            mostrarMesasFiltradas();
+        });
+
+        // Obtener las reservas al cargar la página
+        
+        cargarRestaurantes();
+
+        obtenerMesas();
+
+    </script>
+</body>
+</html>

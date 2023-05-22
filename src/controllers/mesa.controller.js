@@ -167,19 +167,19 @@ export const updateMesaById = async (req, res) => {
 };
 
 export const getMesasByRestaurante = async (req, res) => {
-  const { restaurante } = req.params;
+  const { restauranteId } = req.params;
   const mesas = await Mesa.findAll({
     attributes: [
       "id",
       "nombre_mesa",
-      "restaurante",
+      "restauranteId",
       "posicion_x",
       "posicion_y",
       "nro_piso",
       "capacidad",
     ],
     where: {
-      restaurante,
+      restauranteId,
     },
   });
   res.json({
