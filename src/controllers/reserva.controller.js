@@ -75,6 +75,14 @@ export const postReservas = async (req, res) => {
         cantidad: capacidad,
     })
 
+       // Actualizar el campo "ocupado" a true en la tabla de la mesa
+       await Mesa.update({ ocupado: true }, {
+        where: {
+            id: id_mesa
+        }
+    })
+
+
     const rangos_de_hora = []
     for (let index = desdeHora; index < hastaHora; index++) {
         rangos_de_hora.push(`${index}-${index+1}`)

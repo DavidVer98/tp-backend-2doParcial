@@ -33,5 +33,10 @@ export const Mesa = sequelize.define('mesa', {
     capacidad: {
         type: DataTypes.INTEGER,
     },
+
+    ocupado: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
 });
 
